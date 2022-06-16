@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:pharus/constant/colors.dart';
+import 'package:pharus/controllers/career_controller.dart';
 import 'package:pharus/models_questionnaire/artistic_mode.dart';
 import 'package:pharus/models_questionnaire/conventional_mode.dart';
 import 'package:pharus/models_questionnaire/enterprising_model.dart';
@@ -10,6 +11,7 @@ import 'package:pharus/models_questionnaire/realstic_model.dart';
 import 'package:pharus/models_questionnaire/social_model.dart';
 import 'package:pharus/ui/screens/recommend_Career.dart';
 import 'package:pharus/ui/widgets/buttons.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'job_zone_screen.dart';
@@ -38,110 +40,116 @@ class _ResultState extends State<Result> {
   int enterprisingResult = EnterprisingModel.resultEnterprising();
 
   int conventionalResult = ConventionalModel.resultConventional();
+  String finalResult = '';
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // appBar: AppBar(
-      //   flexibleSpace: Center(
-      //     child: Image.asset(
-      //       'images/logo.png',
-      //       height: 120,
-      //       width: 120,
-      //     ),
-      //   ),
-      //   backgroundColor: Colors.white12,
-      //   elevation: 0,
-      // ),
-      body: SafeArea(
-          child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              // Center(
-              //   child: Image.asset(
-              //     'images/logo.png',
-              //     height: MediaQuery.of(context).size.height * .13,
-              //     width: MediaQuery.of(context).size.height * .15,
-              //   ),
-              // ),
-              const Text(
-                "here you'll find your interests profiler result:",
-                style: TextStyle(fontSize: 19),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height * .35,
-                child: SfCartesianChart(
-                    borderColor: border,
-                    borderWidth: 2,
-                    plotAreaBorderColor: border,
-                    primaryXAxis: CategoryAxis(),
-                    series: <ChartSeries<ExpenseData, String>>[
-                      ColumnSeries<ExpenseData, String>(
-                          color: bottom,
-                          dataSource: _chartData,
-                          xValueMapper: (ExpenseData sales, _) =>
-                              sales.expenseCategory,
-                          yValueMapper: (ExpenseData sales, _) => sales.result)
-                    ]),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                child: text('Realistic', '${realisticResult}'),
-                color:
-                    retrieve(result[0], result[1], result[2], realisticResult),
-                height: 50,
-                width: double.infinity,
-              ),
-              Container(
-                child: text('Investigative', '${investigativeResult}'),
-                color: retrieve(
-                    result[0], result[1], result[2], investigativeResult),
-                height: 50,
-              ),
-              Container(
-                  child: text('Artistic', '${artisticResult}'),
-                  height: 50,
+    return Consumer<CareerController>(builder: (context, value, child) {
+      return Scaffold(
+        // appBar: AppBar(
+        //   flexibleSpace: Center(
+        //     child: Image.asset(
+        //       'images/logo.png',
+        //       height: 120,
+        //       width: 120,
+        //     ),
+        //   ),
+        //   backgroundColor: Colors.white12,
+        //   elevation: 0,
+        // ),
+        body: SafeArea(
+            child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                // Center(
+                //   child: Image.asset(
+                //     'images/logo.png',
+                //     height: MediaQuery.of(context).size.height * .13,
+                //     width: MediaQuery.of(context).size.height * .15,
+                //   ),
+                // ),
+                const Text(
+                  "here you'll find your interests profiler result:",
+                  style: TextStyle(fontSize: 19),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height * .35,
+                  child: SfCartesianChart(
+                      borderColor: border,
+                      borderWidth: 2,
+                      plotAreaBorderColor: border,
+                      primaryXAxis: CategoryAxis(),
+                      series: <ChartSeries<ExpenseData, String>>[
+                        ColumnSeries<ExpenseData, String>(
+                            color: bottom,
+                            dataSource: _chartData,
+                            xValueMapper: (ExpenseData sales, _) =>
+                                sales.expenseCategory,
+                            yValueMapper: (ExpenseData sales, _) =>
+                                sales.result)
+                      ]),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  child: text('Realistic', '${realisticResult}'),
                   color: retrieve(
-                      result[0], result[1], result[2], artisticResult)),
-              Container(
-                  child: text('Social', '${socialResult}'),
+                      result[0], result[1], result[2], realisticResult, 'R'),
                   height: 50,
-                  color:
-                      retrieve(result[0], result[1], result[2], socialResult)),
-              Container(
-                  child: text('Enterprising', '${enterprisingResult}'),
+                  width: double.infinity,
+                ),
+                Container(
+                  child: text('Investigative', '${investigativeResult}'),
+                  color: retrieve(result[0], result[1], result[2],
+                      investigativeResult, 'I'),
                   height: 50,
+                ),
+                Container(
+                    child: text('Artistic', '${artisticResult}'),
+                    height: 50,
+                    color: retrieve(
+                        result[0], result[1], result[2], artisticResult, 'A')),
+                Container(
+                    child: text('Social', '${socialResult}'),
+                    height: 50,
+                    color: retrieve(
+                        result[0], result[1], result[2], socialResult, 'S')),
+                Container(
+                    child: text('Enterprising', '${enterprisingResult}'),
+                    height: 50,
+                    color: retrieve(result[0], result[1], result[2],
+                        enterprisingResult, 'E')),
+                Container(
+                  child: text('Conventional', '${conventionalResult}'),
                   color: retrieve(
-                      result[0], result[1], result[2], enterprisingResult)),
-              Container(
-                child: text('Conventional', '${conventionalResult}'),
-                color: retrieve(
-                    result[0], result[1], result[2], conventionalResult),
-                height: 50,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              buttons(Colors.white, bottom, 'NEXT !', () {
-                setState(() {
-                  Navigator.pushNamed(context, RecommendCareer.id);
-                });
-              }),
-              const SizedBox(
-                height: 20,
-              )
-            ],
+                      result[0], result[1], result[2], conventionalResult, 'C'),
+                  height: 50,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                buttons(Colors.white, bottom, 'NEXT !', () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => JobZoneScreen(finalResult)),
+                  );
+                }),
+                const SizedBox(
+                  height: 20,
+                )
+              ],
+            ),
           ),
-        ),
-      )),
-    );
+        )),
+      );
+    });
   }
 
   Row text(String word, String num) {
@@ -161,6 +169,14 @@ class _ResultState extends State<Result> {
         )
       ],
     );
+  }
+
+  Color retrieve(int x, int y, int z, int mainNum, String type) {
+    if (mainNum == x || mainNum == y || mainNum == z) {
+      finalResult = finalResult + type;
+    }
+
+    return (mainNum == x || mainNum == y || mainNum == z) ? circle : null;
   }
 
   List<ExpenseData> getChartData() {
@@ -194,8 +210,4 @@ class ExpenseData {
 
   final String expenseCategory;
   final num result;
-}
-
-Color retrieve(int x, int y, int z, int mainNum) {
-  return (mainNum == x || mainNum == y || mainNum == z) ? circle : null;
 }

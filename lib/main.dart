@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pharus/controllers/auth_controller.dart';
+import 'package:pharus/controllers/career_controller.dart';
 import 'package:pharus/my_dio/my_dio.dart';
 import 'package:pharus/shared_pref/shared_pref.dart';
 import 'package:pharus/ui/screens/career_detail.dart';
@@ -33,6 +34,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: ((context) => AuthController()),
         ),
+        ChangeNotifierProvider(
+          create: ((context) => CareerController()),
+        ),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -49,9 +53,9 @@ class MyApp extends StatelessWidget {
             OnboardingScreen.id: (context) => OnboardingScreen(),
             SplashScreens.id: (context) => SplashScreens(),
             Result.id: (context) => Result(),
-            RecommendCareer.id: (context) => RecommendCareer(),
+            // RecommendCareer.id: (context) => RecommendCareer(),
             Realistic.id: (context) => Realistic(),
-            JobZoneScreen.id: (context) => JobZoneScreen(),
+            // JobZoneScreen.id: (context) => JobZoneScreen(),
             CareerDetails.id: (context) => CareerDetails(),
             CoursesNames.id: (context) => CoursesNames(),
           }),
