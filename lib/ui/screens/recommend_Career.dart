@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pharus/constant/colors.dart';
 import 'package:pharus/controllers/career_controller.dart';
+import 'package:pharus/models/career_model.dart';
 import 'package:pharus/ui/screens/career_detail.dart';
 import 'package:pharus/ui/screens/results.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +33,7 @@ class _RecommendCareerState extends State<RecommendCareer> {
     // TODO: implement initState
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       final proivder = Provider.of<CareerController>(context, listen: false);
-      proivder.getUserCareer(widget.code, int.parse(widget.area), context);
+      proivder.getUserCareer(widget.code, widget.area, context);
     });
 
     super.initState();
@@ -75,6 +76,7 @@ class _RecommendCareerState extends State<RecommendCareer> {
                     itemCount: value.career.length,
                     itemBuilder: (context, index) {
                       return CardData(
+                          career: value.career[index],
                           index: (index + 1).toString(),
                           title: value.career[index].title,
                           subtitle: value.career[index].description);
@@ -90,10 +92,14 @@ class _RecommendCareerState extends State<RecommendCareer> {
 
 class CardData extends StatelessWidget {
   CardData(
-      {@required this.index, @required this.title, @required this.subtitle});
+      {@required this.index,
+      @required this.title,
+      @required this.subtitle,
+      @required this.career});
   String index;
   String title;
   String subtitle;
+  CareerModel career;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -101,7 +107,15 @@ class CardData extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(15),
         onTap: () {
-          Navigator.pushNamed(context, CareerDetails.id);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CareerDetails(
+                      career: career,
+                      index: index,
+                    )),
+          );
+          // Navigator.pushNamed(context, CareerDetails.id);
         },
         child: Card(
           shape: RoundedRectangleBorder(

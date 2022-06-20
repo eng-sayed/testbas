@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:pharus/constant/colors.dart';
+import 'package:pharus/models/career_model.dart';
 import 'package:pharus/ui/widgets/buttons.dart';
 
 class CareerDetails extends StatefulWidget {
   static const id = 'CareerDetails';
-
+  CareerModel career;
+  String index;
+  CareerDetails({@required this.career, @required this.index});
   @override
   _CareerDetailsState createState() => _CareerDetailsState();
 }
@@ -24,12 +27,12 @@ class _CareerDetailsState extends State<CareerDetails> {
                   Padding(
                     padding: const EdgeInsets.only(left: 30),
                     child: CircleAvatar(
-                      child: Text('1'),
+                      child: Text(widget.index),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(8, 10, 8, 8),
-                    child: Text('Agricultural Inspectors',
+                    child: Text(widget.career.title,
                         style: TextStyle(
                             color: Colors.teal,
                             fontSize: 20,
@@ -55,23 +58,23 @@ class _CareerDetailsState extends State<CareerDetails> {
                         ),
                         SizedBox(height: 15),
                         Text(
-                          'Inspect agricultural commodities,processing equipment,and facilities,to ensure compliance with regulations and laws governing health,quality,and safety',
+                          widget.career.description,
                           style: TextStyle(
                               color: labelText, fontWeight: FontWeight.w300),
                         ),
                         SizedBox(height: 15),
-                        Text(
-                          'On the job,you would:',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w400),
-                        ),
-                        SizedBox(height: 15),
-                        Text(
-                          '* Inspect food product and processing procedures to determine whether products are safe to eat\n \n \n *Interpret and enforce government acts and regulations and explain required standards to agricultural workers \n \n \n * Set standard for the production of meat or poultry products or for food ingredients, additives,or compounds used to prepare or package products.',
-                          style: TextStyle(
-                              color: labelText, fontWeight: FontWeight.w300),
-                        ),
-                        SizedBox(height: 15),
+                        // Text(
+                        //   'On the job,you would:',
+                        //   style: TextStyle(
+                        //       fontSize: 18, fontWeight: FontWeight.w400),
+                        // ),
+                        // SizedBox(height: 15),
+                        // Text(
+                        //   '* Inspect food product and processing procedures to determine whether products are safe to eat\n \n \n *Interpret and enforce government acts and regulations and explain required standards to agricultural workers \n \n \n * Set standard for the production of meat or poultry products or for food ingredients, additives,or compounds used to prepare or package products.',
+                        //   style: TextStyle(
+                        //       color: labelText, fontWeight: FontWeight.w300),
+                        // ),
+                        // SizedBox(height: 15),
                         Text(
                           'Skills:',
                           style: TextStyle(
@@ -79,7 +82,10 @@ class _CareerDetailsState extends State<CareerDetails> {
                         ),
                         SizedBox(height: 15),
                         Text(
-                            '* listening to others ,not interrupting, and asking good questions',
+                            widget.career.skills
+                                .replaceAll("'", "")
+                                .replaceAll("}", "")
+                                .replaceAll("{", ""),
                             style: TextStyle(
                                 color: labelText, fontWeight: FontWeight.w300)),
                         SizedBox(height: 15),
@@ -88,7 +94,10 @@ class _CareerDetailsState extends State<CareerDetails> {
                                 fontSize: 18, fontWeight: FontWeight.w400)),
                         SizedBox(height: 15),
                         Text(
-                            '* Visual Understanding like: see hidden patterns.',
+                            widget.career.abilities
+                                .replaceAll("'", "")
+                                .replaceAll("}", "")
+                                .replaceAll("{", ""),
                             style: TextStyle(
                                 color: labelText, fontWeight: FontWeight.w300))
                       ],

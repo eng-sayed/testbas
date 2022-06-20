@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:pharus/constant/colors.dart';
@@ -171,10 +172,37 @@ class _ResultState extends State<Result> {
     );
   }
 
+  Map<String, int> dataa = {
+    'R': 0,
+    'I': 0,
+    'A': 0,
+    'S': 0,
+    'E': 0,
+    'C': 0,
+  };
   Color retrieve(int x, int y, int z, int mainNum, String type) {
-    if (mainNum == x || mainNum == y || mainNum == z) {
-      finalResult = finalResult + type;
+    dataa.update(type, (value) => mainNum);
+    print(dataa);
+
+    // if (mainNum == x || mainNum == y || mainNum == z) {
+    //   finalResult = finalResult + type;
+    // }
+    final sortedValuesAsc = SplayTreeMap<String, int>.from(
+        dataa, (keys1, keys2) => dataa[keys2].compareTo(dataa[keys1]));
+
+    List<String> list = sortedValuesAsc.keys.toList();
+    print(list);
+
+    if (list.length > 3) {
+      for (int i = 0; i < list.length; i++) {
+        if (list.length > 3) {
+          list.removeLast();
+        }
+      }
+      ;
     }
+
+    finalResult = list.join('');
 
     return (mainNum == x || mainNum == y || mainNum == z) ? circle : null;
   }
@@ -192,7 +220,7 @@ class _ResultState extends State<Result> {
   }
 
   List<int> getResult() {
-    final List<int> result = [
+    final List<int> results = [
       realisticResult,
       investigativeResult,
       artisticResult,
@@ -200,8 +228,13 @@ class _ResultState extends State<Result> {
       enterprisingResult,
       conventionalResult
     ];
+    results.sort();
+    List<int> reversedList = List.from(results.reversed);
+// Map<String, int> myFinalData= {}
+    // results.reversed();
+    // print(result.sort());
 
-    return result..sort((a, b) => b - a);
+    return reversedList;
   }
 }
 
